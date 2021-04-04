@@ -1,5 +1,9 @@
 #include <ESP8266WiFi.h>
 
+// OBSOLETE!!! SAVED FOR ADXL STUFF ONLY
+
+// SUPERCEDED BY esp8266Server.ino
+
 // To compile this program on the teensy2Esp8266 interface breadboard,
 // compile that program to the teensy 4.0, run it in a console, and
 // press 'P' for program to put the esp8266 in program mode and act
@@ -114,10 +118,12 @@ void setup(void)
     #if WITH_ACCEL
         delay(1000);
         initAccel();
+        #if WITH_SERIAL
+            Serial.println("Accel started ..");
+        #endif
     #endif
 
     #if WITH_SERIAL
-        Serial.println("Accel started ..");
         delay(1000);
         Serial.println("Test program started");
     #endif

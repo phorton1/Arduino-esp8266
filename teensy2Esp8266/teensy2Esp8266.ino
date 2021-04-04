@@ -13,7 +13,7 @@
 
 void setup()
 {
-    Serial3.begin(115200);
+    Serial3.begin(9600);
 
     pinMode(ESP2866_RESET,OUTPUT);
     pinMode(ESP2866_GPIO_0_PROG,OUTPUT);
@@ -29,7 +29,7 @@ void setup()
 
     delay(1200);
     digitalWrite(TEENSY_ONBOARD_LED,0);
-    display(0,"teensyEsp8266 v1.2 started",0);
+    display(0,"teensyEsp8266 v1.3 started",0);
 }
 
 

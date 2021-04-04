@@ -3,66 +3,34 @@ use warnings;
 use IO::Socket::INET;
 use Time::HiRes qw( sleep usleep );
 
+my $peer_addr = "192.168.0.102:80";
+
+print "Connecting to peer at $peer_addr\n";
 
 
 my @psock = (
-    PeerAddr => "192.168.0.103:80",
-    PeerPort => 80,     # "udp(80)",         #  "http(80)",
-    Proto    => 'udp' );    # 'tcp' );
-my $sock = IO::Socket::INET->new(@psock);
-binmode $sock;
+    PeerAddr => $peer_addr,
+    PeerPort => 80,         # "udp(80)",         #  "http(80)",
+    Proto    => 'tcp',      # 'udp'
+    Timeout  => 5,          # timeout for connection
+);
 
+my $sock = IO::Socket::INET->new(@psock);
 if (!$sock)
 {
-    print("ERROR could not conect to server\n");
+    print("ERROR could not connect to server\n");
     exit(0);
 }
+binmode $sock;
 
-
-# my $started = 0;
-# my $line = '';
-# my $at = 0;
+print "Connected.\n";
 
 while (1)
 {
-    my $line;
-    recv($sock,$line,7,0);
+    my $c;
+    if (read($sock,$c,1)==1)
     {
-        my ($x,$y,$z) = unpack("sss",$line);
-        print("x=$x y=$y z=$z\n");
+        printf("-->(0x%02x) %s\n",ord($c),(ord($c)>32?$c:' '));
     }
     sleep(0.01);
-    
-    
-    # my $c;
-    # if (read($sock,$c,1)==1)    
-    # {
-    #     # print("c=".ord($c)."\n" );
-    #      
-    #     if (ord($c)==10)    # 0x0a written for \n by esp8266  # eq '\n')
-    #     {
-    #         if ($at == 6)
-    #         {
-    #             my ($x,$y,$z) = unpack("sss",$line);
-    #             print("x=$x y=$y z=$z\n");
-    #         }
-    #         $at = 0;
-    #         $line = '';
-    #         $started = 1;
-    #     }
-    #     elsif ($started)
-    #     {
-    #         $line .= $c;
-    #         $at++;
-    #     }
-    # }
-    # sleep(0.01);
-
-    # my $line = <$sock>;
-    # if (defined($line))
-    # {
-    #     my ($x,$y,$z) = unpack("sss",$line);
-    #     print("x=$x y=$y z=$z\n");
-    # }
-    # sleep(0.01);
 }
