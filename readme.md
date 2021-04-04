@@ -1,27 +1,32 @@
 ## My esp8266 stuff
 
 These subdirectories contain various things having to do with the esp8266
-and specifically the ESP01 module.  The most recent and substantial subproject
-at this time is the esp8266Server.
+and specifically the ESP01 module.
 
 - **esp8266Server** - contains a somewhat generalized pass through client/server
-  for sending two way serial data over wifi using TCP/IP.
+  for sending two way serial data over wifi using TCP/IP.  Note that It can act
+  **both**  as a Wifi client and server so it is somewhat inappropriately named.
+- **teensy2Esp8266** - contains a program that runs on a Teensy that can program
+  the esp8266 and act as a MCU client or server using esp8266's using the
+  *esp8266Server* program above.  You 'talk' to the esp8266 through the USB
+  port with a Putty console to the teensy COM port.
 
-The idea behind this program is that you connect two ESP01's to two MCUs via serial
-TX and RX lines and use this software to communicate over wifi somewhat transparently
-between them with normal Serial.avaialble(), read(), write(), print(), etc.
+The idea behind the **esp8266Server** program is that you can connect two ESP01's to two
+MCUs via serial TX and RX lines and use this software to communicate over wifi somewhat
+transparently between them with normal Serial.avaialble(), read(), write(), print(), etc.
 
-To orchestrate this you either recompile esp8266Server twice (once for the server
-and once for the client) with different #defines for two ESP01 modules, so that
-one boots as a server and one boots as a client, or you compile it the same for
-both modules, probably with a default of "Server", as checked in, and then
-effect "station" mode on the client by issuing a '#' command via serial
-data to the client module.  See [esp8266Server/readme.md](esp8266Server/readme.md)
-for more information.
+In general usage, with an arbitrary MCU, to orchestrate this you either recompile
+esp8266Server twice (once for the server and once for the client) with different
+#defines for two ESP01 modules, so that one boots as a server and one boots as a
+client, or you compile it the same for both modules, probably with a default of
+"Server", as checked in, and then effect "station" mode on the client by issuing
+a "#HOST 0" command via serial data to the client module.
 
-BTW, all of this stuff was old and then became re-activated when I did my
-weird *Tumbller project*.  So there is also a bunch of esp8266 stuff there
-which actually supercedes this stuff.
+The **teensy2Esp8266** program runs on a teensy to both demonstrate
+the cient server MCU architecture and to serve as a programmer for the esp8266
+and *should* handle these details but as currently checked in. You use it by opening
+a console (putty) to the teensy (teensies) USB port nd see that it can send chars
+back and forth.
 
 In addition to the esp8266Serrver this project contains the following more or
 less obsolete subprojects for posterities sake.
@@ -89,15 +94,15 @@ RESET button so the module boots with GPIO_0_PROG low into flash mode.  If
 it works then the Arduino IDE will succesfully communicate with the esp8266 and
 download the program.    Note the following requirements for the Arduino IDE:
 
+- Arduino Board Manager must contain "Community ESP8266" board set
+- Use first generic ESP8266 board in Arduino IDE
 
 It is a short step from there to insert a MCU in place of the FDTI to allow software
 control of the bootup sequence.  Unfortunately an Arduino Nano is not well suited
 to this role due to it's lack of multiple UART hardware serial ports.  Therefore
 I chose to use a (variety of) Teensy processors thanks to their small form factor
-and plethora of hardware serial ports.  The implementation of a dual purpose
-programmer/functional module for the esp8266 using a teensy 4.0 can be found
-in my *Tumbller project*.
-
+and plethora of hardware serial ports.  See below for a circuit diagram compatible
+with the teensy2Esp8266 sketch.
 
 ### POWER SUPPLY AND CAPACITORS
 
@@ -110,12 +115,12 @@ resets of the ESP8266 that it is **necessary to have a big (470uf)
 capacitor** on the 3.3v supply to handle the hungry power requirements
 of the ESP01.
 
+![teensy2Esp8266Circuit](_images/teensy2Esp8266Circuit.jpg)
+
 I have also heard you should put a 0.1uf (100 nf)
 capacitor across VCC (and most other pins) and ground to help with
 noise problems but I am not doing that at this time and it seems
 to be working "ok".
-
-These mods are shown in the circuit diagram in my *Tumbller project*.
 
 
 ### Serial Baud Rates
@@ -141,7 +146,7 @@ to something, to use the GPIO pins effectively requires pull up
 resistors so that it boots normally before your program stsrts running and
 only you *might* be able to get away with it, depending on the external circutry.
 
-%%% Please see my *Tumbller project*
+### Please see my *Tumbller project*
 
 I provide the above circuit diagrams for reference only.   In my later
 project I implemented a more robust circuit that uses a teensy 4.0

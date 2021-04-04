@@ -1,5 +1,15 @@
 #include "myDebug.h"
 
+// The teensy communicates with the esp8266 over Serial3
+// which is on pins 14-RX and 15-TX.
+//
+// When this program is running the serial data from the
+// teensy USB port is sent to the esp8266 and vice-versa.
+//
+// In Putty console typing ctrl-R will RESET the esp8266
+// and ctrl-P will put it in programming mode.
+
+
 #define TEENSY_ONBOARD_LED    13
 #define LED_FLASH_ON          10
 #define LED_FLASH_OFF        800
