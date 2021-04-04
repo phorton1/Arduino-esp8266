@@ -20,7 +20,7 @@ data to the client module.  See [esp8266Server/readme.md](esp8266Server/readme.m
 for more information.
 
 BTW, all of this stuff was old and then became re-activated when I did my
-weird "Tumbller" project.  So there is also a bunch of esp8266 stuff there
+weird *Tumbller project*.  So there is also a bunch of esp8266 stuff there
 which actually supercedes this stuff.
 
 In addition to the esp8266Serrver this project contains the following more or
@@ -79,12 +79,14 @@ and/or connecting to it via Wifi and no circuit board technically would be neede
 
 But soon you will want to create a breadboard with a RESET button and a button
 to pull GPIO_0_PROG low (against a pullup resitor), even with just the FDTI
-programming approach.  Here is a circuit board that provides that functionality.
+programming approach.  Here is a circuit that provides that functionality.
+
+![ESP01-pinout](_images/SimpleEsp8266ProgrammingCircuit.jpg)
 
 To use it, BEFORE you start your build in the Arduino IDE you press and hold
-both the RESET and the GPIO_0_PROG buttons for a second and then RELEASE the
+both the RESET and the PROG buttons for a second and then RELEASE the
 RESET button so the module boots with GPIO_0_PROG low into flash mode.  If
-it works the Arduino IDE will succesfully communicate with the esp8266 and
+it works then the Arduino IDE will succesfully communicate with the esp8266 and
 download the program.    Note the following requirements for the Arduino IDE:
 
 
@@ -94,7 +96,7 @@ to this role due to it's lack of multiple UART hardware serial ports.  Therefore
 I chose to use a (variety of) Teensy processors thanks to their small form factor
 and plethora of hardware serial ports.  The implementation of a dual purpose
 programmer/functional module for the esp8266 using a teensy 4.0 can be found
-in my Tumbller project.
+in my *Tumbller project*.
 
 
 ### POWER SUPPLY AND CAPACITORS
@@ -112,6 +114,8 @@ I have also heard you should put a 0.1uf (100 nf)
 capacitor across VCC (and most other pins) and ground to help with
 noise problems but I am not doing that at this time and it seems
 to be working "ok".
+
+These mods are shown in the circuit diagram in my *Tumbller project*.
 
 
 ### Serial Baud Rates
@@ -135,10 +139,11 @@ Once the module is booted normally you can use the GPIO pins.  In practice,
 due to the boot up requirements, assuming you are going to hook them up
 to something, to use the GPIO pins effectively requires pull up
 resistors so that it boots normally before your program stsrts running and
-can call pinMode() ... though I suppose if they were tied to floating inputs
 only you *might* be able to get away with it, depending on the external circutry.
 
-%%% Please see my Tumbller project
+%%% Please see my *Tumbller project*
 
 I provide the above circuit diagrams for reference only.   In my later
-project I implemented a
+project I implemented a more robust circuit that uses a teensy 4.0
+to both **program** the esp8266 and to do something useful by *using*
+the esp8266 as a pass through serial device to the robot.
